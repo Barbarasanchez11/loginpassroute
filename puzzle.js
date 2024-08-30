@@ -1,14 +1,14 @@
 // Snippets de código para poder componer el programa
 
-//Usado?: 
+//Usado?: yes(app.js)
   const middlewares = require('./middlewares');
-//--- Explicación: 
+//--- Explicación: se importan middlewares definidos en 'middlewares.js'
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes (app.js)
 const bodyParser = require('body-parser');
-//--- Explicación:
+//--- Explicación:nos da los datos de formularios
 
 // -------------------------------------------------------------------------------------
 
@@ -18,9 +18,9 @@ const session = require('express-session');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?:Yes (app.js)
 const express = require('express');
-//--- Explicación:
+//--- Explicación: se importa express para crear el servidor
 
 // -------------------------------------------------------------------------------------
 
@@ -36,19 +36,19 @@ const session = require('express-session');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes(mid.js)
 const dotenv = require('dotenv');
-//--- Explicación:
+//--- Explicación:carga variables de entorno desde el archivo.env
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes (rou)
 const middlewares = require('./middlewares');
 //--- Explicación:
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?:
 const routes = require('./routes');
 //--- Explicación:
 
@@ -60,15 +60,15 @@ dotenv.config();
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes
 const app = express();
-//--- Explicación:
+//--- Explicación:inicializa express
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes(app)
 const PORT = 4000;
-//--- Explicación:
+//--- Explicación:se asigna puerto a variable
 
 // -------------------------------------------------------------------------------------
 
@@ -78,9 +78,9 @@ const dotenv = require('dotenv');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 dotenv.config();
-//--- Explicación:
+//--- Explicación:carga variables de entorno desde el .env
 
 // -------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ routes.setup(app);
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes(mid)
 const validarPalabraMiddleware = (req, res, next) => {
   const palabraCorrecta = process.env.PALABRA_SECRETA || '';
 
@@ -107,13 +107,14 @@ const validarPalabraMiddleware = (req, res, next) => {
     res.redirect('/?error=1');
   }
 };
-//--- Explicación: 
+//--- Explicación: se valida si la palabra es la correcta, si es correcta se guarda y se sigue ejecutando,
+// si no, redirige a error
 
 
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?:yes
 const setup = (app) => {
   app.get('/', (req, res) => {
     const mensajeError = req.query.error
@@ -124,13 +125,18 @@ const setup = (app) => {
     }
   //Aquí va código dentro
 })}
-//--- Explicación: 
+//--- Explicación: se establece la raiz,
+//se comprueba si hay error en la consulta, si el error es igual a '1' el mensaje: Palabra incorrecta, inténtalo de nuevo.' 
+//si hay un error pero es diferente a 1 te da : 'No estás logado.
+//si no hay error te da ''(cadena vacia)
+
+//si existe req.session.palabraSecreta, redirige a la ruta /profile
 
 
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?:yes
 res.send(`
   <html>
     <body>
@@ -144,7 +150,7 @@ res.send(`
     </body>
   </html>
 `);
-//--- Explicación: 
+//--- Explicación: introducir la palabra, en caso de error aparece mensaje, botón submit de enviar el form
 
 
 // -------------------------------------------------------------------------------------
@@ -159,7 +165,7 @@ const setupAPP = (app) => {
   }));
 };
 
-//Usado?:
+//Usado?:yes
 app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
   res.send(`
     <h1>Ruta del Perfil</h1>
@@ -168,7 +174,8 @@ app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
     </form>
   `);
 });
-//--- Explicación: 
+//--- Explicación: se tiene que pasar por middlewares.validarPalabraMiddleware para hacer la validadción antes de darnos una resp.
+//aparecerá un mensaje y un form para cerrar sesión
 
 // -------------------------------------------------------------------------------------
 
@@ -190,15 +197,16 @@ app.use(session({
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes 
 app.listen(PORT, () => {
   console.log(`Servidor en ejecución en http://localhost:${PORT}`);
 });
-//--- Explicación: 
+//--- Explicación: se asigna el puerto donde se va a consumir el end point
+
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 const verificarSesionMiddleware = (req, res, next) => {
   if (req.session.palabraSecreta) {
     next();
@@ -206,7 +214,8 @@ const verificarSesionMiddleware = (req, res, next) => {
     res.redirect('/?error=2');
   }
 };
-//--- Explicación: 
+//--- Explicación: se asegura que la sesión está activa con la palabraSecreta, si está pas al siguiente middleware
+//si no, redirige a la pag. de inicio con un mensaje de error
 
 // -------------------------------------------------------------------------------------
 
@@ -246,13 +255,13 @@ module.exports = {
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 module.exports = {
   validarPalabraMiddleware,
   verificarSesionMiddleware,
   setupAPP,
 };
-//--- Explicación:
+//--- Explicación:exportamos modulos
 
 // -------------------------------------------------------------------------------------
 
