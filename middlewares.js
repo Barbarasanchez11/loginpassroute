@@ -1,10 +1,7 @@
-const dotenv = require('dotenv')
-const bodyParser = require('body-parser');
 const session = require('express-session');
-
-
-dotenv.config()
-
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const validarPalabraMiddleware = (req, res, next) => {
     const palabraCorrecta = process.env.PALABRA_SECRETA || '';
@@ -17,7 +14,7 @@ const validarPalabraMiddleware = (req, res, next) => {
     }
   };
 
-  const verificarSesionMiddleware = (req, res, next) => {
+const verificarSesionMiddleware = (req, res, next) => {
     if (req.session.palabraSecreta) {
       next();
     } else {
@@ -34,9 +31,8 @@ const validarPalabraMiddleware = (req, res, next) => {
     }));
   };
 
-module.export = {
+  module.exports = {
     validarPalabraMiddleware,
     verificarSesionMiddleware,
     setupAPP,
-
-}
+  };

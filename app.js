@@ -1,30 +1,26 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
 const session = require('express-session');
-const bodyParser = require('body-parser')
-const dotenv = require('dotenv')
-
-const middlewares = require('./middlewares')
-const routes = require('./routes')
-
+const dotenv = require('dotenv');
 dotenv.config();
 
+const PORT = 4000;
+
+const middlewares = require('./middlewares');
+const routes = require('./routes');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(session({
     secret: process.env.PALABRA_SECRETA || 'secretoSuperSecreto',
     resave: false,
     saveUninitialized: true,
   }));
 
-middlewares.setupApp(app)
-routes.setup(app)
+middlewares.setupAPP(app);
+routes.setup(app);
 
-
-
-const port = 4000
-
-app.listen(port, () => {
-    console.log(`El servidor está escuchando en http://localhost:${port}`)
-
-})
+app.listen(PORT, () => {
+    console.log(`Servidor en ejecución en http://localhost:${PORT}`);
+  });

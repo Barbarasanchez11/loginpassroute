@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes
 const session = require('express-session');
 //--- Explicación:
 
@@ -24,13 +24,13 @@ const express = require('express');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes (app)
 const bodyParser = require('body-parser');
 //--- Explicación:
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes(mid)
 const session = require('express-session');
 //--- Explicación:
 
@@ -48,13 +48,13 @@ const middlewares = require('./middlewares');
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 const routes = require('./routes');
 //--- Explicación:
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes
 dotenv.config();
 //--- Explicación:
 
@@ -72,7 +72,7 @@ const PORT = 4000;
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: 
+//Usado?: yes (app)
 const dotenv = require('dotenv');
 //--- Explicación:
 
@@ -84,13 +84,13 @@ dotenv.config();
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 middlewares.setupApp(app);
 //--- Explicación: 
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 routes.setup(app);
 //--- Explicación: 
 
@@ -155,7 +155,7 @@ res.send(`
 
 // -------------------------------------------------------------------------------------
 
-
+//Usado?:yes
 const setupAPP = (app) => {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(session({
@@ -164,6 +164,7 @@ const setupAPP = (app) => {
     saveUninitialized: true,
   }));
 };
+//--- Explicación:
 
 //Usado?:yes
 app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
@@ -179,14 +180,14 @@ app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes(app)
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //--- Explicación: 
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 app.use(session({
   secret: process.env.PALABRA_SECRETA || 'secretoSuperSecreto',
   resave: false,
@@ -220,7 +221,7 @@ const verificarSesionMiddleware = (req, res, next) => {
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?:yes
 app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
   res.send(`
     <h1>Ruta del Perfil (Sesión activa)</h1>
@@ -229,12 +230,12 @@ app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
     </form>
   `);
 });
-//--- Explicación: 
+//--- Explicación: desde la ruta /profile, si la sesión es válida te devuelve el HTML
 
 // -------------------------------------------------------------------------------------
 
 
-//Usado?:
+//Usado?:yes
 app.post('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -243,15 +244,18 @@ app.post('/logout', (req, res) => {
     res.redirect('/');
   });
 });
-//--- Explicación: 
+//--- Explicación: destroy se usa para destruir los datos de la sesión,cuando se intenta destruir
+//puede ocurrir un error, por eso se le pasa el parámetro.
+//si hay error se imprime Error al cerrar sesión:', err
+//Se redirige a la raíz('/') despues de destruir la sesión
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:
+//Usado?:yes
 module.exports = {
   setup,
 };
-//--- Explicación:
+//--- Explicación:exportamos modulo
 
 // -------------------------------------------------------------------------------------
 

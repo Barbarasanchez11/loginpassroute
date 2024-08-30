@@ -1,6 +1,4 @@
-const middlewares = require('./middlewares')
-const session = require('express-session');
-const express = require('express')
+const middlewares = require('./middlewares');
 
 const setup = (app) => {
     app.get('/', (req, res) => {
@@ -9,8 +7,8 @@ const setup = (app) => {
         : '';
       if (req.session.palabraSecreta) {
         return res.redirect('/profile');
-      }
-      res.send(`
+      }//Aquí va código dentro
+    res.send(`
         <html>
           <body>
             <h1>Página de Inicio</h1>
@@ -23,34 +21,32 @@ const setup = (app) => {
           </body>
         </html>
       `);
-  })}
-
-  app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
-    res.send(`
-      <h1>Ruta del Perfil</h1>
-      <form method="post" action="/logout">
-        <button type="submit">Log Out</button>
-      </form>
-    `);
-  });
-
-  app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
-    res.send(`
-      <h1>Ruta del Perfil (Sesión activa)</h1>
-      <form method="post" action="/logout">
-        <button type="submit">Log Out</button>
-      </form>
-    `);
-  });
-
-  app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error('Error al cerrar sesión:', err);
-      }
-      res.redirect('/');
-    });
-  });
+    })
+      app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
+        res.send(`
+          <h1>Ruta del Perfil</h1>
+          <form method="post" action="/logout">
+            <button type="submit">Log Out</button>
+          </form>
+        `);
+      });
+      app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
+        res.send(`
+          <h1>Ruta del Perfil (Sesión activa)</h1>
+          <form method="post" action="/logout">
+            <button type="submit">Log Out</button>
+          </form>
+        `);
+      });
+      app.post('/logout', (req, res) => {
+        req.session.destroy((err) => {
+          if (err) {
+            console.error('Error al cerrar sesión:', err);
+          }
+          res.redirect('/');
+        });
+      });
+    }
 
   module.exports = {
     setup,
