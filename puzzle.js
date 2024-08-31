@@ -1,80 +1,84 @@
 // Snippets de código para poder componer el programa
 
-//Usado?: yes(app.js)
+//Usado?: yes
   const middlewares = require('./middlewares');
-//--- Explicación: se importan middlewares definidos en 'middlewares.js'
+//--- Explicación: se importan middlewares desde 'middlewares.js'
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: yes (app.js)
+//Usado?: yes 
 const bodyParser = require('body-parser');
-//--- Explicación:nos da los datos de formularios
+//--- Explicación:se importa 'body-parser' asignado a la variable bodyParser 
+//nos da los datos de formularios y JSON
 
 // -------------------------------------------------------------------------------------
 
 //Usado?: yes
 const session = require('express-session');
-//--- Explicación:
+//--- Explicación:se importa 'express-session' asignado a la variable session
 
 // -------------------------------------------------------------------------------------
 
-//Usado?:Yes (app.js)
+//Usado?:Yes 
 const express = require('express');
-//--- Explicación: se importa express para crear el servidor
+//--- Explicación: se importa express para crear el servidor y manejar las rutas
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: yes (app)
+//Usado?: yes 
 const bodyParser = require('body-parser');
-//--- Explicación:
+//--- Explicación:e importa 'body-parser' asignado a la variable bodyParser 
+//nos da los datos de formularios y JSON
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: yes(mid)
+//Usado?: yes
 const session = require('express-session');
-//--- Explicación:
+//--- Explicación:se importa 'express-session' asignado a la variable session
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: yes(mid.js)
+//Usado?: yes
 const dotenv = require('dotenv');
-//--- Explicación:carga variables de entorno desde el archivo.env
+//--- Explicación:se importa 'dotenv' asigando a la variable dotenv
+//carga variables de entorno desde el archivo.env
 
 // -------------------------------------------------------------------------------------
 
-//Usado?: yes (rou)
+//Usado?: yes 
 const middlewares = require('./middlewares');
-//--- Explicación:
+//--- Explicación: se importan middlewares desde 'middlewares.js'
 
 // -------------------------------------------------------------------------------------
 
 //Usado?:yes
 const routes = require('./routes');
-//--- Explicación:
+//--- Explicación:se importan las rutas a la app principal
 
 // -------------------------------------------------------------------------------------
 
 //Usado?: yes
 dotenv.config();
-//--- Explicación:
+//--- Explicación:se cargan variables de entorno desde .env
 
 // -------------------------------------------------------------------------------------
 
 //Usado?: yes
 const app = express();
-//--- Explicación:inicializa express
+//--- Explicación:inicializa express, define rutas y middleware en la aplicación web
 
 // -------------------------------------------------------------------------------------
 
 //Usado?: yes(app)
 const PORT = 4000;
-//--- Explicación:se asigna puerto a variable
+//--- Explicación:se define la variable con el puerto 4000, es donde se 
+//escucharán las oslicitudes del servidor
 
 // -------------------------------------------------------------------------------------
 
 //Usado?: yes (app)
 const dotenv = require('dotenv');
-//--- Explicación:
+//--- Explicación:inicializa el módulo dotenv, se cargan variables de entorno desde .env
 
 // -------------------------------------------------------------------------------------
 
@@ -86,13 +90,14 @@ dotenv.config();
 
 //Usado?:yes
 middlewares.setupApp(app);
-//--- Explicación: 
+//--- Explicación: se llama a la función setupApp del módulo middlewares, 
+
 
 // -------------------------------------------------------------------------------------
 
 //Usado?:yes
 routes.setup(app);
-//--- Explicación: 
+//--- Explicación: se llama a la función setupApp del módulo routes
 
 // -------------------------------------------------------------------------------------
 
@@ -107,8 +112,9 @@ const validarPalabraMiddleware = (req, res, next) => {
     res.redirect('/?error=1');
   }
 };
-//--- Explicación: se valida si la palabra es la correcta, si es correcta se guarda y se sigue ejecutando,
-// si no, redirige a error
+//--- Explicación: se compara req.body.palabra con palabraCorrecta,
+//si coinciden se guarda en req.body.palabra y se sigue ejecutando(next())
+//si no coincide se reditige al error ('/?error=1')
 
 
 // -------------------------------------------------------------------------------------
@@ -125,7 +131,7 @@ const setup = (app) => {
     }
   //Aquí va código dentro
 })}
-//--- Explicación: se establece la raiz,
+//--- Explicación: se configura el endpoint '/'
 //se comprueba si hay error en la consulta, si el error es igual a '1' el mensaje: Palabra incorrecta, inténtalo de nuevo.' 
 //si hay un error pero es diferente a 1 te da : 'No estás logado.
 //si no hay error te da ''(cadena vacia)
@@ -150,7 +156,8 @@ res.send(`
     </body>
   </html>
 `);
-//--- Explicación: introducir la palabra, en caso de error aparece mensaje, botón submit de enviar el form
+//--- Explicación: Da un respuesta HTML, en caso de error aparece mensaje,
+// botón submit para enviar a la ruta './profile' mediante un POST
 
 
 // -------------------------------------------------------------------------------------
@@ -164,7 +171,11 @@ const setupAPP = (app) => {
     saveUninitialized: true,
   }));
 };
-//--- Explicación:
+//--- Explicación: bodyParser analiza los datos de formularios. ession maneja sesiones
+//de usuarios en la aplicación:
+//secret:es un valor secreto para proteger la sesión y evitar que pueda ser maniulada.
+//resave:la sesisón no se vuelve a guaradar si no se modifica.
+//saveUninitialized: las sesiones vacías (las que se han creado pero no se han modificado) se guardarán
 
 //Usado?:yes
 app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
@@ -175,15 +186,19 @@ app.post('/profile', middlewares.validarPalabraMiddleware, (req, res) => {
     </form>
   `);
 });
-//--- Explicación: se tiene que pasar por middlewares.validarPalabraMiddleware para hacer la validadción antes de darnos una resp.
-//aparecerá un mensaje y un form para cerrar sesión
+//--- Explicación: se ruta POST '/profile'
+//Se valida la palabra secreta aplicando el middleware(validarPalabraMiddleware),
+//si es correcto da un respuesta HTML que contiene un formulario y botón de cierre de sesión('logoy')
 
 // -------------------------------------------------------------------------------------
 
 //Usado?:yes(app)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//--- Explicación: 
+//--- Explicación:  configura la aplicación Express para que pueda interpretar y manejar 
+//datos enviados a través de formularios HTML (específicamente, aquellos enviados con el método POST).
+// Al establecer extended en true, permite trabajar con datos anidados.
+
 
 // -------------------------------------------------------------------------------------
 
@@ -194,7 +209,11 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-//--- Explicación: 
+//--- Explicación: Se llama a la función session que es parte del middleware 'express-session'
+//secret: se obtiene de la variable de entorno(PALABRA_SECRETA) se usará si está definida,
+//si no, se usará 'secretoSuperSecreto'.
+//resave: el false indica que la sesisón no se debe guardar
+// saveUninitialized: se guardarán las sesiones nuevas que no se han inicializado
 
 // -------------------------------------------------------------------------------------
 
@@ -202,7 +221,8 @@ app.use(session({
 app.listen(PORT, () => {
   console.log(`Servidor en ejecución en http://localhost:${PORT}`);
 });
-//--- Explicación: se asigna el puerto donde se va a consumir el end point
+//--- Explicación: se escucha en el puerto(4000) y se muestra el mensaje:
+// Servidor en ejecución en http://localhost:4000
 
 
 // -------------------------------------------------------------------------------------
@@ -215,7 +235,8 @@ const verificarSesionMiddleware = (req, res, next) => {
     res.redirect('/?error=2');
   }
 };
-//--- Explicación: se asegura que la sesión está activa con la palabraSecreta, si está pas al siguiente middleware
+//--- Explicación: Verifica si es correcta la sesión, 
+//si lo es pasa al siguiente middleware
 //si no, redirige a la pag. de inicio con un mensaje de error
 
 // -------------------------------------------------------------------------------------
@@ -230,7 +251,9 @@ app.get('/profile', middlewares.verificarSesionMiddleware, (req, res) => {
     </form>
   `);
 });
-//--- Explicación: desde la ruta /profile, si la sesión es válida te devuelve el HTML
+//--- Explicación: define ruta GET para /profile,
+//se verifica si la sesión está activa
+// si la sesión es válida te devuelve el HTML con un formulario y botón de cierre de sesión
 
 // -------------------------------------------------------------------------------------
 
@@ -244,9 +267,11 @@ app.post('/logout', (req, res) => {
     res.redirect('/');
   });
 });
-//--- Explicación: destroy se usa para destruir los datos de la sesión,cuando se intenta destruir
+//--- Explicación:define ruta POST para '/logout'
+
+//destroy se usa para destruir los datos de la sesión,cuando se intenta destruir
 //puede ocurrir un error, por eso se le pasa el parámetro.
-//si hay error se imprime Error al cerrar sesión:', err
+//si hay error se imprime error en la consola.
 //Se redirige a la raíz('/') despues de destruir la sesión
 
 // -------------------------------------------------------------------------------------
@@ -255,7 +280,7 @@ app.post('/logout', (req, res) => {
 module.exports = {
   setup,
 };
-//--- Explicación:exportamos modulo
+//--- Explicación:exportamos función setup
 
 // -------------------------------------------------------------------------------------
 
@@ -265,7 +290,7 @@ module.exports = {
   verificarSesionMiddleware,
   setupAPP,
 };
-//--- Explicación:exportamos modulos
+//--- Explicación:exportamos funciones de middlewares
 
 // -------------------------------------------------------------------------------------
 

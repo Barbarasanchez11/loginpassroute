@@ -3,6 +3,16 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const setupAPP = (app) => {
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(session({
+    secret: 'secretoSuperSecreto',
+    resave: false,
+    saveUninitialized: true,
+  }));
+};
+
+
 const validarPalabraMiddleware = (req, res, next) => {
     const palabraCorrecta = process.env.PALABRA_SECRETA || '';
   
@@ -22,15 +32,7 @@ const verificarSesionMiddleware = (req, res, next) => {
     }
   };
 
-  const setupAPP = (app) => {
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(session({
-      secret: 'secretoSuperSecreto',
-      resave: false,
-      saveUninitialized: true,
-    }));
-  };
-
+ 
   module.exports = {
     validarPalabraMiddleware,
     verificarSesionMiddleware,
